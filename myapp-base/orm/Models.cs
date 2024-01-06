@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 
 //Do not modify. v1.0
-//Code generated using custom ORM Mapper on 1/5/2024 12:45:06 AM
+//Code generated using custom ORM Mapper on 1/6/2024 12:23:27 AM
 namespace myapp.orm
 {
-    public partial class ErrorList : List<string>
+    public class ErrorList : List<string>
     {
         public override string ToString()
         {
@@ -18,16 +18,16 @@ namespace myapp.orm
         }
     }
 
-    public partial interface IModel
+    public interface IModel
     {
         (bool, ErrorList) Validate();
         bool Save(int savedByUserid = 0);
     }
-    public partial class AuthUsers : AuthUsersModel, IModel
+    public class AuthUsersBase : AuthUsersModel, IModel
     {
-        public void Set(AuthUsersModel model)
+        public void Set(object model)
         {
-            CoreUtils.Data.CopyProperties(this, model);
+            CoreUtils.Data.CopyProperties(model, this);
         }
 
         public virtual (bool, ErrorList) Validate()
@@ -56,7 +56,7 @@ namespace myapp.orm
         }
     }
 
-    public partial interface IAuthUsers
+    public interface IAuthUsers
     {
         public Int32 Id { get; set; }
         public string UserName { get; set; }
@@ -69,9 +69,11 @@ namespace myapp.orm
         public Int32 UserIdCreated { get; set; }
         public Int32? UserIdModified { get; set; }
         public bool IsActive { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
     }
 
-    public abstract partial class AuthUsersModel : IAuthUsers
+    public partial class AuthUsersModel : IAuthUsers
     {
 
         public Int32 Id { get; set; }
@@ -85,12 +87,14 @@ namespace myapp.orm
         public Int32 UserIdCreated { get; set; }
         public Int32? UserIdModified { get; set; }
         public bool IsActive { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
     }
-    public partial class EnumsList : EnumsListModel, IModel
+    public class EnumsListBase : EnumsListModel, IModel
     {
-        public void Set(AuthUsersModel model)
+        public void Set(object model)
         {
-            CoreUtils.Data.CopyProperties(this, model);
+            CoreUtils.Data.CopyProperties(model, this);
         }
 
         public virtual (bool, ErrorList) Validate()
@@ -115,7 +119,7 @@ namespace myapp.orm
         }
     }
 
-    public partial interface IEnumsList
+    public interface IEnumsList
     {
         public Int32 Id { get; set; }
         public string DataGroup { get; set; }
@@ -123,7 +127,7 @@ namespace myapp.orm
         public string DisplayText { get; set; }
     }
 
-    public abstract partial class EnumsListModel : IEnumsList
+    public partial class EnumsListModel : IEnumsList
     {
 
         public Int32 Id { get; set; }
@@ -135,9 +139,9 @@ namespace myapp.orm
 
     public static class SQLStrings
     {
-        public const string AuthUsers_Insert = " insert into AuthUsers (UserName,PasswordHash,PasswordSalt,Email,AuthRoles,DateCreated,DateModified,UserIdCreated,UserIdModified,IsActive)VALUES(@UserName,@PasswordHash,@PasswordSalt,@Email,@AuthRoles,@DateCreated,@DateModified,@UserIdCreated,@UserIdModified,@IsActive)  select @Id=SCOPE_IDENTITY();";
-        public const string AuthUsers_Select = " select [Id],[UserName],[PasswordHash],[PasswordSalt],[Email],[AuthRoles],[DateCreated],[DateModified],[UserIdCreated],[UserIdModified],[IsActive] from AuthUsers where Id=@Id";
-        public const string AuthUsers_Update = " update AuthUsers set UserName=@UserName,PasswordHash=@PasswordHash,PasswordSalt=@PasswordSalt,Email=@Email,AuthRoles=@AuthRoles,DateCreated=@DateCreated,DateModified=@DateModified,UserIdCreated=@UserIdCreated,UserIdModified=@UserIdModified,IsActive=@IsActive where Id=@Id";
+        public const string AuthUsers_Insert = " insert into AuthUsers (UserName,PasswordHash,PasswordSalt,Email,AuthRoles,DateCreated,DateModified,UserIdCreated,UserIdModified,IsActive,FirstName,LastName)VALUES(@UserName,@PasswordHash,@PasswordSalt,@Email,@AuthRoles,@DateCreated,@DateModified,@UserIdCreated,@UserIdModified,@IsActive,@FirstName,@LastName)  select @Id=SCOPE_IDENTITY();";
+        public const string AuthUsers_Select = " select [Id],[UserName],[PasswordHash],[PasswordSalt],[Email],[AuthRoles],[DateCreated],[DateModified],[UserIdCreated],[UserIdModified],[IsActive],[FirstName],[LastName] from AuthUsers where Id=@Id";
+        public const string AuthUsers_Update = " update AuthUsers set UserName=@UserName,PasswordHash=@PasswordHash,PasswordSalt=@PasswordSalt,Email=@Email,AuthRoles=@AuthRoles,DateCreated=@DateCreated,DateModified=@DateModified,UserIdCreated=@UserIdCreated,UserIdModified=@UserIdModified,IsActive=@IsActive,FirstName=@FirstName,LastName=@LastName where Id=@Id";
         public const string AuthUsers_Delete = " delete from AuthUsers where Id=@Id";
 
         public const string EnumsList_Insert = " insert into EnumsList (DataGroup,DataText,DisplayText)VALUES(@DataGroup,@DataText,@DisplayText)  select @Id=SCOPE_IDENTITY();";

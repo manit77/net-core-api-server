@@ -7,69 +7,46 @@ using System.Data.SqlClient;
 using System.Linq;
 
 //Do not modify.
-//Code generated using custom ORM Mapper on 1/5/2024 12:45:07 AM
+//Code generated using custom ORM Mapper on 1/6/2024 12:23:27 AM
 namespace myapp.orm
 {
     public static partial class Procedures
     {
-        //public static partial class Procedures
-        //{
-        public static T GetAuthUserByEmail<T>(string email)
+        public static DataTable GetAuthUserByEmail_DT(string email)
         {
-            object rv = null;
+            string sql = "GetAuthUserByEmail";
             List<IDbDataParameter> parameters = new List<IDbDataParameter>();
-            CoreUtils.IDatabase db = DataAccess.DB;
-            parameters.Add(db.GetParameter("@email", email));
-
-            if (typeof(T) == typeof(DataTable))
-            {
-                rv = db.GetDataTable("GetAuthUserByEmail", parameters, CommandType.StoredProcedure);
-            }
-            else if (typeof(T) == typeof(SqlDataReader))
-            {
-                rv = db.GetDataReader("GetAuthUserByEmail", parameters, CommandType.StoredProcedure);
-            }
-            else
-            {
-                Type type = typeof(T);
-                if (typeof(System.Collections.IEnumerable).IsAssignableFrom(type))
-                {
-                    throw new Exception("Generic list is not support. Get SQLDataReader and convert to list.");
-                }
-                rv = db.Query<T>("GetAuthUserByEmail", parameters, CommandType.StoredProcedure).FirstOrDefault();
-
-            }
-            return (T)rv;
+            parameters.Add(DataAccess.DB.GetParameter("@email", email));
+            return DataAccess.DB.GetDataTable(sql, parameters, CommandType.StoredProcedure);
         }
-        public static T GetAuthUserByUserName<T>(string username)
+        public static IEnumerable<T> GetAuthUserByEmail<T>(string email)
         {
-            object rv = null;
+            string sql = "GetAuthUserByEmail";
             List<IDbDataParameter> parameters = new List<IDbDataParameter>();
-            CoreUtils.IDatabase db = DataAccess.DB;
-            parameters.Add(db.GetParameter("@username", username));
-
-            if (typeof(T) == typeof(DataTable))
-            {
-                rv = db.GetDataTable("GetAuthUserByUserName", parameters, CommandType.StoredProcedure);
-            }
-            else if (typeof(T) == typeof(SqlDataReader))
-            {
-                rv = db.GetDataReader("GetAuthUserByUserName", parameters, CommandType.StoredProcedure);
-            }
-            else
-            {
-                Type type = typeof(T);
-                if (typeof(System.Collections.IEnumerable).IsAssignableFrom(type))
-                {
-                    throw new Exception("Generic list is not support. Get SQLDataReader and convert to list.");
-                }
-                var data = db.Query<T>("GetAuthUserByUserName", parameters, CommandType.StoredProcedure);
-                rv = data.FirstOrDefault();
-
-            }
-            return (T)rv;
+            parameters.Add(DataAccess.DB.GetParameter("@email", email));
+            return DataAccess.DB.Query<T>(sql, parameters, CommandType.StoredProcedure);
         }
-        //}// end Procedures
-    }//end Procedures
-}//end namespace
+        public static DataTable GetAuthUserByUserName_DT(string username)
+        {
+            string sql = "GetAuthUserByUserName";
+            List<IDbDataParameter> parameters = new List<IDbDataParameter>();
+            parameters.Add(DataAccess.DB.GetParameter("@username", username));
+            return DataAccess.DB.GetDataTable(sql, parameters, CommandType.StoredProcedure);
+        }
+        public static IEnumerable<T> GetAuthUserByUserName<T>(string username)
+        {
+            string sql = "GetAuthUserByUserName";
+            List<IDbDataParameter> parameters = new List<IDbDataParameter>();
+            parameters.Add(DataAccess.DB.GetParameter("@username", username));
+            return DataAccess.DB.Query<T>(sql, parameters, CommandType.StoredProcedure);
+        }
+        public static IEnumerable<T> SearchAuthUsers<T>(string query)
+        {
+            string sql = "SearchAuthUsers";
+            List<IDbDataParameter> parameters = new List<IDbDataParameter>();
+            parameters.Add(DataAccess.DB.GetParameter("@query", query));
+            return DataAccess.DB.Query<T>(sql, parameters, CommandType.StoredProcedure);
+        }
+    }
+}
 

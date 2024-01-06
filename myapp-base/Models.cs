@@ -1,7 +1,9 @@
-﻿using myapp.orm;
+﻿using Microsoft.Extensions.Configuration;
+using myapp.orm;
 using Org.BouncyCastle.Tls.Crypto;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace myapp
 {
-    public class AuthUsers : myapp.orm.AuthUsers
+    public class AuthUsers : myapp.orm.AuthUsersBase
     {
         public AuthUsers() { }
 
@@ -18,22 +20,17 @@ namespace myapp
             var errors = new ErrorList();
             if (string.IsNullOrEmpty(this.UserName) || this.UserName.Length == 0)
             {
-                errors.Add("User name is required.");
+                errors.Add("Username is required.");
             }
 
             if (string.IsNullOrEmpty(this.Email) || this.Email.Length == 0)
             {
-                errors.Add("User name is required.");
-            }
-
-            if (string.IsNullOrEmpty(this.PasswordHash) || this.PasswordHash.Length == 0)
-            {
-                errors.Add("Password is required.");
+                errors.Add("Email is required.");
             }
 
             if (errors.Count == 0)
             {
-                var dt = Procedures.GetAuthUserByUserName<System.Data.DataTable>(this.Email);
+                var dt = Procedures.GetAuthUserByUserName_DT(this.Email);
                 if (dt.Rows.Count > 0)
                 {
                     foreach (System.Data.DataRow r in dt.Rows)
@@ -48,7 +45,7 @@ namespace myapp
 
             if (errors.Count == 0)
             {
-                var dt = Procedures.GetAuthUserByUserName<System.Data.DataTable>(this.UserName);
+                var dt = Procedures.GetAuthUserByUserName_DT(this.UserName);
                 if (dt.Rows.Count > 0)
                 {
                     foreach (System.Data.DataRow r in dt.Rows)
@@ -61,13 +58,18 @@ namespace myapp
                 }
             }
 
+            if (errors.Count == 0)
+            {
+                return (true, errors);
+            }
+
             return (false, errors);
         }
 
         public (bool, ErrorList) GetByUserName(string username)
         {
             var errors = new ErrorList();
-            var model = Procedures.GetAuthUserByUserName<AuthUsersModel>(username);
+            var model = Procedures.GetAuthUserByUserName<AuthUsersModel>(username).FirstOrDefault();
             if (model != null)
             {
                 base.Set(model);
@@ -81,7 +83,7 @@ namespace myapp
         public (bool, ErrorList) GetByUserEmail(string email)
         {
             var errors = new ErrorList();
-            var model = Procedures.GetAuthUserByEmail<AuthUsersModel>(email);
+            var model = Procedures.GetAuthUserByEmail<AuthUsersModel>(email).FirstOrDefault();
             if (model != null)
             {
                 base.Set(model);
@@ -104,9 +106,46 @@ namespace myapp
             this.PasswordHash = CoreUtils.Cryptography.BCryptHashPassword(password);
         }
 
-        public bool ValidatePassword(string password)
+        public bool ValidatePasswordHash(string password)
         {
             return CoreUtils.Cryptography.BCryptVerif(password, this.PasswordHash);
         }
+
+        public (bool, ErrorList) ValidatePassword(string password)
+        {
+            var errors = new ErrorList();
+            if (CoreUtils.Data.IsStringNullEmptySpaces(password))
+            {
+                errors.Add("password is empty");
+                return (false, errors);
+            }
+
+            if (password.Length < 6)
+            {
+                errors.Add("password must be at least 6 characters");
+                return (false, errors);
+            }
+
+            return (true, errors);
+        }
+    }
+
+    public class EnumsList : myapp.orm.EnumsListBase
+    {
+
+    }
+
+    public class AppConfigs
+    {
+        private readonly IConfiguration configsection;
+        private string connectionString;
+        private string jWTSecret;
+
+        public AppConfigs(Microsoft.Extensions.Configuration.IConfiguration configsection)
+        {
+            this.configsection = configsection;
+        }
+        public string ConnectionString { get => this.configsection["connectionstring"]; set => connectionString = value; }
+        public string JWTSecret { get => this.configsection["jwtsecret"]; set => jWTSecret = value; }
     }
 }

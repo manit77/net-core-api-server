@@ -8,7 +8,7 @@ using System.Data.SqlClient;
 using CoreUtils;
 
 //Do not modify.
-//Code generated using custom ORM Mapper on 1/5/2024 12:45:06 AM
+//Code generated using custom ORM Mapper on 1/6/2024 12:23:26 AM
 namespace myapp.orm
 {
     public static partial class DataAccess
@@ -46,6 +46,8 @@ namespace myapp.orm
                     int posUserIdCreated = r.GetOrdinal("UserIdCreated");
                     int posUserIdModified = r.GetOrdinal("UserIdModified");
                     int posIsActive = r.GetOrdinal("IsActive");
+                    int posFirstName = r.GetOrdinal("FirstName");
+                    int posLastName = r.GetOrdinal("LastName");
 
                     model = new AuthUsers
                     {
@@ -60,6 +62,8 @@ namespace myapp.orm
                         UserIdCreated = (Int32)(r[posUserIdCreated]),
                         UserIdModified = Data.CastIt<Int32>(r[posUserIdModified]),
                         IsActive = (bool)(r[posIsActive]),
+                        FirstName = (string)(r[posFirstName]),
+                        LastName = (string)(r[posLastName]),
 
                     };
                 }
@@ -99,6 +103,8 @@ namespace myapp.orm
                 int posUserIdCreated = r.GetOrdinal("UserIdCreated");
                 int posUserIdModified = r.GetOrdinal("UserIdModified");
                 int posIsActive = r.GetOrdinal("IsActive");
+                int posFirstName = r.GetOrdinal("FirstName");
+                int posLastName = r.GetOrdinal("LastName");
 
                 while (r.Read())
                 {
@@ -115,6 +121,8 @@ namespace myapp.orm
                         UserIdCreated = (Int32)(r[posUserIdCreated]),
                         UserIdModified = Data.CastIt<Int32>(r[posUserIdModified]),
                         IsActive = (bool)(r[posIsActive]),
+                        FirstName = (string)(r[posFirstName]),
+                        LastName = (string)(r[posLastName]),
 
                     };
                     list.Add(model);
@@ -152,6 +160,8 @@ namespace myapp.orm
                 UserIdCreated = (Int32)(r["UserIdCreated"]),
                 UserIdModified = Data.CastIt<Int32>(r["UserIdModified"]),
                 IsActive = (bool)(r["IsActive"]),
+                FirstName = (string)(r["FirstName"]),
+                LastName = (string)(r["LastName"]),
 
             };
             return model;
@@ -183,6 +193,8 @@ namespace myapp.orm
             parameters.Add(db.GetParameter("@UserIdCreated", _AuthUsers.UserIdCreated));
             parameters.Add(db.GetParameter("@UserIdModified", _AuthUsers.UserIdModified));
             parameters.Add(db.GetParameter("@IsActive", _AuthUsers.IsActive));
+            parameters.Add(db.GetParameter("@FirstName", _AuthUsers.FirstName ?? ""));
+            parameters.Add(db.GetParameter("@LastName", _AuthUsers.LastName ?? ""));
 
             if (_AuthUsers.Id == 0)
             {
