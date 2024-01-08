@@ -8,7 +8,7 @@ using System.Data.SqlClient;
 using CoreUtils;
 
 //Do not modify.
-//Code generated using custom ORM Mapper on 1/6/2024 12:23:26 AM
+//Code generated using custom ORM Mapper on 1/7/2024 11:30:32 PM
 namespace myapp.orm
 {
     public static partial class DataAccess
@@ -16,19 +16,15 @@ namespace myapp.orm
         public static IDatabase DB { get; set; }
         #region execute code
         /*
-
-
-
-    */
+        */
         #endregion
         #region AuthUsers
-        public static AuthUsers AuthUsers_Get(Int32 Id)
+        public static AuthUsersBase AuthUsers_Get(Int32 Id)
         {
-            AuthUsers model = null;
+            AuthUsersBase model = null;
             IDatabase db = DataAccess.DB;
             List<IDbDataParameter> parameters = new List<IDbDataParameter>();
             parameters.Add(db.GetParameter("@Id", Id));
-
             IDataReader r = null;
             try
             {
@@ -48,8 +44,7 @@ namespace myapp.orm
                     int posIsActive = r.GetOrdinal("IsActive");
                     int posFirstName = r.GetOrdinal("FirstName");
                     int posLastName = r.GetOrdinal("LastName");
-
-                    model = new AuthUsers
+                    model = new AuthUsersBase
                     {
                         Id = (Int32)(r[posId]),
                         UserName = (string)(r[posUserName]),
@@ -64,7 +59,6 @@ namespace myapp.orm
                         IsActive = (bool)(r[posIsActive]),
                         FirstName = (string)(r[posFirstName]),
                         LastName = (string)(r[posLastName]),
-
                     };
                 }
                 r.Close();
@@ -85,69 +79,9 @@ namespace myapp.orm
             }
             return model;
         }
-
-        public static List<AuthUsers> AuthUsers_Get(IDataReader r)
+        public static AuthUsersBase AuthUsers_Get(DataRow r)
         {
-            List<AuthUsers> list = new List<AuthUsers>();
-            AuthUsers model;
-            try
-            {
-                int posId = r.GetOrdinal("Id");
-                int posUserName = r.GetOrdinal("UserName");
-                int posPasswordHash = r.GetOrdinal("PasswordHash");
-                int posPasswordSalt = r.GetOrdinal("PasswordSalt");
-                int posEmail = r.GetOrdinal("Email");
-                int posAuthRoles = r.GetOrdinal("AuthRoles");
-                int posDateCreated = r.GetOrdinal("DateCreated");
-                int posDateModified = r.GetOrdinal("DateModified");
-                int posUserIdCreated = r.GetOrdinal("UserIdCreated");
-                int posUserIdModified = r.GetOrdinal("UserIdModified");
-                int posIsActive = r.GetOrdinal("IsActive");
-                int posFirstName = r.GetOrdinal("FirstName");
-                int posLastName = r.GetOrdinal("LastName");
-
-                while (r.Read())
-                {
-                    model = new AuthUsers()
-                    {
-                        Id = (Int32)(r[posId]),
-                        UserName = (string)(r[posUserName]),
-                        PasswordHash = (string)(r[posPasswordHash]),
-                        PasswordSalt = (string)(r[posPasswordSalt]),
-                        Email = (string)(r[posEmail]),
-                        AuthRoles = (string)(r[posAuthRoles]),
-                        DateCreated = (DateTimeOffset)(r[posDateCreated]),
-                        DateModified = Data.CastIt<DateTimeOffset>(r[posDateModified]),
-                        UserIdCreated = (Int32)(r[posUserIdCreated]),
-                        UserIdModified = Data.CastIt<Int32>(r[posUserIdModified]),
-                        IsActive = (bool)(r[posIsActive]),
-                        FirstName = (string)(r[posFirstName]),
-                        LastName = (string)(r[posLastName]),
-
-                    };
-                    list.Add(model);
-                }
-                r.Close();
-            }
-            catch
-            {
-                try
-                {
-                    if (r != null)
-                    {
-                        // don't do this in finally clause or reader will not close
-                        r.Close();
-                        r.Dispose();
-                    }
-                }
-                catch { }
-                throw;
-            }
-            return list;
-        }
-        public static AuthUsers AuthUsers_Get(DataRow r)
-        {
-            AuthUsers model = new AuthUsers()
+            AuthUsersBase model = new AuthUsersBase()
             {
                 Id = (Int32)(r["Id"]),
                 UserName = (string)(r["UserName"]),
@@ -162,21 +96,9 @@ namespace myapp.orm
                 IsActive = (bool)(r["IsActive"]),
                 FirstName = (string)(r["FirstName"]),
                 LastName = (string)(r["LastName"]),
-
             };
             return model;
         }
-
-        public static List<AuthUsers> AuthUsers_Get(DataTable dt)
-        {
-            List<AuthUsers> list = new List<AuthUsers>();
-            foreach (DataRow r in dt.Rows)
-            {
-                list.Add(AuthUsers_Get(r));
-            }
-            return list;
-        }
-
         public static int AuthUsers_Save(IAuthUsers _AuthUsers)
         {
             IDatabase db = DataAccess.DB;
@@ -195,7 +117,6 @@ namespace myapp.orm
             parameters.Add(db.GetParameter("@IsActive", _AuthUsers.IsActive));
             parameters.Add(db.GetParameter("@FirstName", _AuthUsers.FirstName ?? ""));
             parameters.Add(db.GetParameter("@LastName", _AuthUsers.LastName ?? ""));
-
             if (_AuthUsers.Id == 0)
             {
                 int rowsaff = db.ExecuteNonQuery(SQLStrings.AuthUsers_Insert, parameters, CommandType.Text);
@@ -207,29 +128,24 @@ namespace myapp.orm
                 return db.ExecuteNonQuery(SQLStrings.AuthUsers_Update, parameters, CommandType.Text);
             }
         }
-
         public static int AuthUsers_Delete(int Id)
         {
             IDatabase db = DataAccess.DB;
             List<IDbDataParameter> parameters = new List<IDbDataParameter>();
-
             IDbDataParameter paramId = new SqlParameter();
             paramId.ParameterName = "@Id";
             paramId.Value = Id;
             parameters.Add(paramId);
-
             return db.ExecuteNonQuery(SQLStrings.AuthUsers_Delete, parameters, CommandType.Text);
         }
         #endregion
-
         #region EnumsList
-        public static EnumsList EnumsList_Get(Int32 Id)
+        public static EnumsListBase EnumsList_Get(Int32 Id)
         {
-            EnumsList model = null;
+            EnumsListBase model = null;
             IDatabase db = DataAccess.DB;
             List<IDbDataParameter> parameters = new List<IDbDataParameter>();
             parameters.Add(db.GetParameter("@Id", Id));
-
             IDataReader r = null;
             try
             {
@@ -240,14 +156,12 @@ namespace myapp.orm
                     int posDataGroup = r.GetOrdinal("DataGroup");
                     int posDataText = r.GetOrdinal("DataText");
                     int posDisplayText = r.GetOrdinal("DisplayText");
-
-                    model = new EnumsList
+                    model = new EnumsListBase
                     {
                         Id = (Int32)(r[posId]),
                         DataGroup = (string)(r[posDataGroup]),
                         DataText = (string)(r[posDataText]),
                         DisplayText = (string)(r[posDisplayText]),
-
                     };
                 }
                 r.Close();
@@ -268,71 +182,17 @@ namespace myapp.orm
             }
             return model;
         }
-
-        public static List<EnumsList> EnumsList_Get(IDataReader r)
+        public static EnumsListBase EnumsList_Get(DataRow r)
         {
-            List<EnumsList> list = new List<EnumsList>();
-            EnumsList model;
-            try
-            {
-                int posId = r.GetOrdinal("Id");
-                int posDataGroup = r.GetOrdinal("DataGroup");
-                int posDataText = r.GetOrdinal("DataText");
-                int posDisplayText = r.GetOrdinal("DisplayText");
-
-                while (r.Read())
-                {
-                    model = new EnumsList()
-                    {
-                        Id = (Int32)(r[posId]),
-                        DataGroup = (string)(r[posDataGroup]),
-                        DataText = (string)(r[posDataText]),
-                        DisplayText = (string)(r[posDisplayText]),
-
-                    };
-                    list.Add(model);
-                }
-                r.Close();
-            }
-            catch
-            {
-                try
-                {
-                    if (r != null)
-                    {
-                        // don't do this in finally clause or reader will not close
-                        r.Close();
-                        r.Dispose();
-                    }
-                }
-                catch { }
-                throw;
-            }
-            return list;
-        }
-        public static EnumsList EnumsList_Get(DataRow r)
-        {
-            EnumsList model = new EnumsList()
+            EnumsListBase model = new EnumsListBase()
             {
                 Id = (Int32)(r["Id"]),
                 DataGroup = (string)(r["DataGroup"]),
                 DataText = (string)(r["DataText"]),
                 DisplayText = (string)(r["DisplayText"]),
-
             };
             return model;
         }
-
-        public static List<EnumsList> EnumsList_Get(DataTable dt)
-        {
-            List<EnumsList> list = new List<EnumsList>();
-            foreach (DataRow r in dt.Rows)
-            {
-                list.Add(EnumsList_Get(r));
-            }
-            return list;
-        }
-
         public static int EnumsList_Save(IEnumsList _EnumsList)
         {
             IDatabase db = DataAccess.DB;
@@ -342,7 +202,6 @@ namespace myapp.orm
             parameters.Add(db.GetParameter("@DataGroup", _EnumsList.DataGroup ?? ""));
             parameters.Add(db.GetParameter("@DataText", _EnumsList.DataText ?? ""));
             parameters.Add(db.GetParameter("@DisplayText", _EnumsList.DisplayText ?? ""));
-
             if (_EnumsList.Id == 0)
             {
                 int rowsaff = db.ExecuteNonQuery(SQLStrings.EnumsList_Insert, parameters, CommandType.Text);
@@ -354,17 +213,14 @@ namespace myapp.orm
                 return db.ExecuteNonQuery(SQLStrings.EnumsList_Update, parameters, CommandType.Text);
             }
         }
-
         public static int EnumsList_Delete(int Id)
         {
             IDatabase db = DataAccess.DB;
             List<IDbDataParameter> parameters = new List<IDbDataParameter>();
-
             IDbDataParameter paramId = new SqlParameter();
             paramId.ParameterName = "@Id";
             paramId.Value = Id;
             parameters.Add(paramId);
-
             return db.ExecuteNonQuery(SQLStrings.EnumsList_Delete, parameters, CommandType.Text);
         }
         #endregion

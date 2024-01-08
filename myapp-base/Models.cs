@@ -130,9 +130,13 @@ namespace myapp
         }
     }
 
-    public class EnumsList : myapp.orm.EnumsListBase
+    public class EnumsLists : myapp.orm.EnumsListBase
     {
-
+        public virtual bool Save(int savedByUserid = 0)
+        {
+            return base.Save(savedByUserid);
+        }
+            
     }
 
     public class AppConfigs

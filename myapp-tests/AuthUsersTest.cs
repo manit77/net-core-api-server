@@ -8,7 +8,7 @@ namespace myapp_tests
     public class AuthUsersTest
     {
         [TestMethod]
-        public void TestMethod1()
+        public void TestAuthUsers()
         {
             //set static DB
             var mockDB = new MockDB();
